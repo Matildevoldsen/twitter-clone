@@ -55,7 +55,7 @@
                 </x-sidebar-item>
             </nav >
 
-            <div x-data="{ open: false}"
+            <div x-data="{ open: false }"
                  @click.outside="open = false"
                  class="w-14 xl:w-full mx-auto mt-auto flex flex-row justify-between mb-5 rounded-full hover:bg-blue-50 dark:hover:bg-dim-800 p-2 cursor-pointer transition duration-350 ease-in-out">
                 <button class="flex w-full justify-between" x-ref="button" @click="open = !open">
@@ -92,8 +92,8 @@
                         </div>
                     </div>
                 </button>
-                <div x-show="open"
-                     x-anchor.top-start.offset.10="$refs.button"
+                <div x-anchor.top-start.offset.10="$refs.button"
+                     x-show="open"
                      class="hover:bg-gray-100  dark:hover:bg-dim-700 shadow-xl rounded-full border dark:border-gray-800 border-gray-50 w-11/12 top-2 bg-white p-4 dark:bg-dim-800"
                      >
                     <div class="w-full text-white">

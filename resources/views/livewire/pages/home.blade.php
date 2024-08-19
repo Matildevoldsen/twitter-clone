@@ -5,4 +5,5 @@
             Home
         </h2>
     </div>
+    <livewire:components.compose.compose />
 </div>
