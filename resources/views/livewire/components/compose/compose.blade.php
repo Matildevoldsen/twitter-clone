@@ -1,25 +1,44 @@
 <form x-data="{
-    body: $wire.entangle('form.body'),
-    radius: 30,
-    maxLength: 280,
-    get percentage() {
-        return Math.round((this.body.length * 100) / this.maxLength);
-    },
-    get displayPercentage() {
-        return this.percentage <= 100 ? this.percentage : 100;
-    },
-    get dash() {
-        return 2 * Math.PI * this.radius;
-    },
-    get offset() {
-        let circ = this.dash;
-        let progress = this.displayPercentage / 100;
-        return circ * (1 - progress);
-    },
-    get percentageIsOver() {
-        return this.percentage > 100;
-    }
-}"
+                body: $wire.entangle('form.body'),
+                radius: 30,
+                maxLength: 280,
+                get percentage() {
+                    return Math.round((this.body.length * 100) / this.maxLength);
+                },
+                get displayPercentage() {
+                    return this.percentage <= 100 ? this.percentage : 100;
+                },
+                get dash() {
+                    return 2 * Math.PI * this.radius;
+                },
+                get offset() {
+                    let circ = this.dash;
+                    let progress = this.displayPercentage / 100;
+                    return circ * (1 - progress);
+                },
+                get percentageIsOver() {
+                    return this.percentage > 100;
+                },
+                renderImage(image) {
+                    if (typeof image === 'string') {
+                        return image;
+                    }
+                    if (image instanceof File) {
+                        return URL.createObjectURL(image);
+                    }
+                    return '';
+                },
+                resetForm() {
+                    this.body = '';
+                    this.images = [];
+                },
+                tweet() {
+                    this.$wire.tweet().then(() => {
+                        this.resetForm();
+                    });
+                }
+            }"
+      @submit.prevent="tweet()"
       class="border-b border-t border-gray-200 dark:border-dim-200 pb-4 border-l border-r">
     <div class="flex flex-shrink-0 pb-4 p-4">
         <div class="flex flex-shrink-0 p-4 pb-0">
@@ -35,7 +54,27 @@
                 x-model="body"
                 placeholder="What's happening?"
                 class="dark:text-white min-h-[64px] ring-0 focus:ring-0 text-gray-900 placeholder-gray-400 w-full h-10 bg-transparent border-0 focus:outline-none resize-none"></textarea>
+            @error('form.body')
+            <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
         </div>
+    </div>
+    <div class="w-full flex flex-wrap p-2 pl-14">
+        @if ($this->form->images)
+            @foreach($this->form->images as $image)
+                <div class="relative m-1">
+                    <img src="{{ $image->temporaryUrl() }}"
+                         class="w-20 h-20 object-cover rounded-md"
+                         alt="Image preview">
+                    <button
+                        type="button"
+                        class="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs"
+                        wire:click="removeImage({{ $loop->index }})">
+                        &times;
+                    </button>
+                </div>
+            @endforeach
+        @endif
     </div>
     <div class="w-full flex items-top p-2 text-white pl-14">
         <div class="flex-grow flex justify-between">
@@ -54,6 +93,7 @@
                 <input
                     type="file"
                     multiple
+                    wire:model="form.images"
                     id="images"
                     class="hidden"
                 />
@@ -86,4 +126,7 @@
             <span class="font-bold text-sm">Tweet</span>
         </button>
     </div>
+    @error('form.images')
+    <p class="text-red-500 text-sm">{{ $message }}</p>
+    @enderror
 </form>
