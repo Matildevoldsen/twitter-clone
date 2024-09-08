@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\TweetType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -68,5 +69,17 @@ class User extends Authenticatable
     public function tweets(): HasMany
     {
         return $this->hasMany(Tweet::class);
+    }
+
+    public function retweets(): HasMany
+    {
+        return $this->hasMany(Tweet::class)
+            ->where('type', TweetType::RETWEET)
+            ->orWhere('type', TweetType::QUOTE);
+    }
+
+    public function hasRetweeted(Tweet $tweet): bool
+    {
+        return $this->retweets->contains('original_tweet_id', $tweet->id);
     }
 }

@@ -1,5 +1,6 @@
-<div class="text-xs text-green-400 flex-1 flex items-center transition duration-350 ease-in-out">
-    <x-tweet-action-dropdown>
+<div
+    class="{{ auth()->user()->hasRetweeted($tweet) ? 'text-green-400' : 'dark:text-white text-gray-400 hover:text-green-400 dark:hover:text-green-400' }} text-xs flex-1 flex items-center transition duration-350 ease-in-out">
+<x-tweet-action-dropdown>
         <x-slot:trigger>
             <svg
                 viewBox="0 0 24 24"
@@ -16,7 +17,15 @@
         </x-slot:trigger>
 
         <x-tweet-action-dropdown-item>
-            Retweet
+            @if (!auth()->user()->hasRetweeted($tweet))
+                <span wire:click="retweet">
+                    Retweet
+                </span>
+            @else
+                <span wire:click="undoRetweet">
+                    Undo Retweet
+                </span>
+            @endif
         </x-tweet-action-dropdown-item>
         <x-tweet-action-dropdown-item>
             Quote

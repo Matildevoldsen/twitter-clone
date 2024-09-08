@@ -3,6 +3,7 @@
 namespace App\Livewire\Components;
 
 use App\Models\Tweet;
+use App\Models\Tweet as TweetModel;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -21,9 +22,20 @@ class Timeline extends Component
     public function listenForTweet($tweet): void
     {
         $tweet = Tweet::find($tweet['id']);
-
         if ($tweet) {
             $this->tweets->prepend($tweet);
+        }
+    }
+
+    #[On('echo:tweets,TweetWasCreated')]
+    public function listenForDeletedTweets($tweet): void
+    {
+        $tweet = TweetModel::find($tweet['id']);
+
+        if ($tweet) {
+            $this->tweets = $this->tweets->reject(function ($t) use ($tweet) {
+                return $t->id === $tweet->id;
+            });
         }
     }
 
@@ -34,6 +46,18 @@ class Timeline extends Component
 
         if ($tweet) {
             $this->tweets->prepend($tweet);
+        }
+    }
+
+    #[On('deleteTweet')]
+    public function deleteTweet($tweetId): void
+    {
+        $tweet = TweetModel::find($tweetId);
+
+        if ($tweet) {
+            $this->tweets = $this->tweets->reject(function ($t) use ($tweet) {
+                return $t->id === $tweet->id;
+            });
         }
     }
 
