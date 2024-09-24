@@ -1,6 +1,6 @@
 <?php
 
-use App\TweetType;
+use App\EntityType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,16 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tweets', function (Blueprint $table) {
+        Schema::create('entities', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
-            $table->text('body')->nullable();
+            $table->foreignId('tweet_id')->unsigned()->index()->constrained('tweets')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', [TweetType::values()]);
-            $table->foreignId('original_tweet_id')->nullable()->constrained('tweets')->cascadeOnDelete();
-            $table->foreignId('parent_id')->nullable()->constrained('tweets')->cascadeOnDelete();
+            $table->text('body');
+            $table->text('body_plain');
+            $table->enum('type', [EntityType::values()]);
+            $table->integer('start')->unsigned();
+            $table->integer('end')->unsigned();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tweets');
+        Schema::dropIfExists('entities');
     }
 };

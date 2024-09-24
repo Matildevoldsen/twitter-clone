@@ -31,8 +31,7 @@ class RetweetAction extends Component
     {
         $retweet = $this->tweet->retweets->where('user_id', auth()->id())->first();
 
-        $retweet->delete();
-        broadcast(new RetweetCountUpdated($this->tweet))->toOthers();
+        broadcast(new RetweetCountUpdated($retweet->originalTweet))->toOthers();
         broadcast(new TweetWasDeleted($retweet))->toOthers();
 
         $this->dispatch(event: 'deleteTweet', tweetId: $retweet->id);
