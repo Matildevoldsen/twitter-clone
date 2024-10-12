@@ -50,6 +50,11 @@ class Tweet extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
     public function retweets(): HasMany
     {
         return  $this->hasMany(Tweet::class, 'original_tweet_id');

@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Traits\HasFollowers;
 use App\TweetType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,6 +20,7 @@ class User extends Authenticatable
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
+    use HasFollowers;
     use TwoFactorAuthenticatable;
 
     /**
@@ -76,6 +79,16 @@ class User extends Authenticatable
         return $this->hasMany(Tweet::class)
             ->where('type', TweetType::RETWEET)
             ->orWhere('type', TweetType::QUOTE);
+    }
+
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function hasLiked(Tweet $tweet): bool
+    {
+        return $this->likes->contains('tweet_id', $tweet->id);
     }
 
     public function hasRetweeted(Tweet $tweet): bool

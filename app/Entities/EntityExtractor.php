@@ -10,6 +10,8 @@ class EntityExtractor implements EntityExtractorContract
     const HASHTAG_REGEX = '/(?!\s)#([A-Za-z]\w*)\b/';
 
     const MENTION_REGEX = '/(?=[^\w!])@(\w+)\b/';
+    const URL_REGEX = '/\bhttps?:\/\/[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/))/i';
+
     public function __construct(protected ?string $string = null)
     {}
 
@@ -25,13 +27,26 @@ class EntityExtractor implements EntityExtractorContract
     {
         $stringWithHashtags = preg_replace_callback(self::HASHTAG_REGEX, function ($matches) {
             $hashtag = $matches[1];
-            return '<a href="/hashtag/' . urlencode($hashtag) . '">#' . htmlspecialchars($hashtag) . '</a>';
+            return '<a wire:navigate href="/hashtag/' . urlencode($hashtag) . '">#' . htmlspecialchars($hashtag) . '</a>';
         }, $this->string);
 
-        return preg_replace_callback(self::MENTION_REGEX, function ($matches) {
+        $stringWithMentions = preg_replace_callback(self::MENTION_REGEX, function ($matches) {
             $mention = $matches[1];
-            return '<a href="/profile/' . urlencode($mention) . '">@' . htmlspecialchars($mention) . '</a>';
+            return '<a wire:navigate href="/profile/' . urlencode($mention) . '">@' . htmlspecialchars($mention) . '</a>';
         }, $stringWithHashtags);
+
+        return preg_replace_callback(self::URL_REGEX, function ($matches) {
+            $url = $matches[0];
+            return '<a href="' . htmlspecialchars($url) . '">' . htmlspecialchars($url) . '</a>';
+        }, $stringWithMentions);
+    }
+
+    public function getUrlEntities(): array
+    {
+        return $this->buildEntityCollection(
+            $this->match(self::URL_REGEX),
+            EntityType::URL
+        );
     }
 
     public function getMentionEntities(): array
@@ -44,7 +59,7 @@ class EntityExtractor implements EntityExtractorContract
 
     public function getAllEntities(): array
     {
-        return array_merge($this->getHashtagEntities(), $this->getMentionEntities());
+        return array_merge($this->getHashtagEntities(), $this->getMentionEntities(), $this->getUrlEntities());
     }
 
     protected function buildEntityCollection($entities, $type): array
