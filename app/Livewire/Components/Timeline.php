@@ -10,11 +10,28 @@ use Livewire\Component;
 
 class Timeline extends Component
 {
-    public Collection $tweets;
+    public array $chunks = [];
+    public int $page = 1;
+    public int $chunkSize = 10;
 
     public function mount(): void
     {
-        $this->tweets = Tweet::whereNull('parent_id')->latest()->get();
+        $this->chunks = Tweet::whereNull('parent_id')
+            ->latest()->pluck('id')->chunk($this->chunkSize)->toArray();
+    }
+
+    public function hasMorePages(): bool
+    {
+        return $this->page < count($this->chunks);
+    }
+
+    public function loadMore(): void
+    {
+        if (!$this->hasMorePages()) {
+            return;
+        }
+
+        $this->page = $this->page + 1;
     }
 
     #[On('echo:tweets,TweetWasCreated')]

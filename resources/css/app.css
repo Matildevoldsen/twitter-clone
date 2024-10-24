@@ -6,8 +6,8 @@
     display: none;
 }
 
-.tweet-body {
-    @apply text-base pl-16 font-medium text-gray-800 dark:text-white flex-shrink;
+.tweet-body  {
+    @apply text-base pl-16 font-medium text-black dark:text-white flex-shrink;
 }
 
 .tweet-body a {

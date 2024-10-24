@@ -17,7 +17,7 @@
             </div>
 
             <livewire:components.tweets.tweet-user :tweet="$tweet"/>
-            <a href="" wire:navigate.hover class="!text-white !no-underline">
+            <a href="" wire:navigate.hover class="!dark:text-white !text-black !no-underline">
                 <p class="tweet-body">
                     {!! $tweet->originalTweet->content_with_links !!}
                 </p>
@@ -30,7 +30,7 @@
         <div
             class="border-b border-t border-gray-200 dark:border-dim-200 hover:bg-gray-100 dark:hover:bg-dim-300 cursor-pointer transition duration-300 ease-in-out pb-4 border-l border-r">
             <livewire:components.tweets.tweet-user :tweet="$tweet"/>
-            <a href="" wire:navigate.hover class="!text-white !no-underline">
+            <a href="" wire:navigate.hover class="!dark:text-white !text-black !no-underline">
                 <p class="tweet-body">
                     {!! $tweet->content_with_links !!}
                 </p>
