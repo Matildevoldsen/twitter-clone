@@ -5,6 +5,7 @@ namespace App\Livewire\Components\Tweets;
 use App\Events\RetweetCountUpdated;
 use App\Events\TweetWasCreated;
 use App\Events\TweetWasDeleted;
+use App\Notifications\RetweetNotification;
 use App\TweetType;
 use Illuminate\Support\Number;
 use Illuminate\View\View;
@@ -24,6 +25,11 @@ class RetweetAction extends Component
 
         broadcast(new TweetWasCreated($tweet))->toOthers();
         broadcast(new RetweetCountUpdated($this->tweet))->toOthers();
+
+        if (auth()->user()->id !== $this->tweet->user_id) {
+            $this->tweet->user->notify(new RetweetNotification($tweet));
+        }
+
         $this->dispatch(event: 'addTweet', tweetId: $tweet->id);
     }
 

@@ -1,12 +1,10 @@
 <div>
-    @if (count($chunks) > 0)
-        @for ($chunk = 0; $chunk < $page; $chunk++)
-            <livewire:components.timeline-chunk :ids="$chunks[$chunk]" :key="$chunk"/>
-        @endfor
-    @endif
+    @foreach ($tweets as $tweet)
+        <livewire:components.tweets.tweet :wire:key="$tweet->id" :tweet="$tweet"/>
+    @endforeach
 
     @if ($this->hasMorePages())
-        <div x-intersect="$wire.loadMore" class="-translate-y-32"></div>
+        <div x-intersect.throttle.200ms="$wire.loadMore" class="-translate-y-32"></div>
     @endif
 
     @if ($this->hasMorePages())

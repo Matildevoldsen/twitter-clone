@@ -3,6 +3,7 @@
 namespace App\Livewire\Components\Tweets;
 
 use App\Events\TweetLikesUpdated;
+use App\Notifications\LikeNotification;
 use Illuminate\Support\Number;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -25,7 +26,9 @@ class TweetActions extends Component
         // broadcast
         broadcast(new TweetLikesUpdated($this->tweet))->toOthers();
 
-        // notify
+        if (auth()->user()->id !== $this->tweet->user_id) {
+            $this->tweet->user->notify(new LikeNotification($this->tweet, auth()->user()));
+        }
     }
 
     public function dislike(): void

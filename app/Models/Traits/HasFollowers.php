@@ -4,6 +4,7 @@ namespace App\Models\Traits;
 
 use App\Models\Follower;
 use App\Models\User;
+use App\Notifications\FollowNotification;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasFollowers
@@ -13,7 +14,7 @@ trait HasFollowers
         if ($this->isFollowing($user)) {
             $this->following()->detach($user);
         } else {
-            //notify user of new follower
+            $user->notify(new FollowNotification($this));
             $this->following()->attach($user);
         }
     }
