@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Entities\EntityExtractor;
+use App\Models\Traits\HasRetweets;
 use App\TweetType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,7 @@ class Tweet extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
     use SoftDeletes;
+    use HasRetweets;
 
     protected $guarded = [];
 
@@ -53,16 +55,6 @@ class Tweet extends Model implements HasMedia
     public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
-    }
-
-    public function retweets(): HasMany
-    {
-        return  $this->hasMany(Tweet::class, 'original_tweet_id');
-    }
-
-    public function originalTweet(): HasOne
-    {
-        return $this->hasOne(Tweet::class, 'id', 'original_tweet_id');
     }
 
     public function entities(): HasMany

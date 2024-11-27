@@ -8,4 +8,8 @@
             </div>
         </main>
     </div>
+
+    @if ($user->id === auth()->user()->id)
+        <livewire:modals.edit-profile-modal/>
+    @endif
 </div>

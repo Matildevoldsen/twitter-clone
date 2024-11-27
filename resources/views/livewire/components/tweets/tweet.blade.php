@@ -19,7 +19,7 @@
             <livewire:components.tweets.tweet-user :tweet="$tweet"/>
             <a href="" wire:navigate.hover class="!dark:text-white !text-black !no-underline">
                 <p class="tweet-body">
-                    {!! $tweet->originalTweet->content_with_links !!}
+                    {!! $tweet->originalTweet->content_with_links ?? $tweet->originalTweet->originalTweet->content_with_links !!}
                 </p>
             </a>
             <div class="pl-16">

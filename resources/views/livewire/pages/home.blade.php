@@ -5,6 +5,8 @@
             Home
         </h2>
     </div>
-    <livewire:components.compose.compose />
-    <livewire:components.timeline />
+    @auth
+        <livewire:components.compose.compose/>
+    @endauth
+    <livewire:components.timeline/>
 </div>

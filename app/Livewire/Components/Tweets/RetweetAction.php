@@ -18,29 +18,30 @@ class RetweetAction extends Component
 
     public function retweet(): void
     {
-        $tweet = $this->tweet->retweets()->create([
-            'user_id' => auth()->id(),
-            'type' => TweetType::RETWEET
-        ]);
+        $tweet = $this->tweet;
+        if ($this->tweet->original_tweet_id) {
+            $tweet = $this->tweet->originalTweet;
 
-        broadcast(new TweetWasCreated($tweet))->toOthers();
-        broadcast(new RetweetCountUpdated($this->tweet))->toOthers();
-
-        if (auth()->user()->id !== $this->tweet->user_id) {
-            $this->tweet->user->notify(new RetweetNotification($tweet));
+            if (auth()->user()->hasRetweeted($tweet)) {
+                return;
+            }
         }
+
+        $tweet->createRetweet();
 
         $this->dispatch(event: 'addTweet', tweetId: $tweet->id);
     }
 
     public function undoRetweet(): void
     {
-        $retweet = $this->tweet->retweets->where('user_id', auth()->id())->first();
+        $retweet = $this->tweet;
 
         broadcast(new RetweetCountUpdated($retweet->originalTweet))->toOthers();
         broadcast(new TweetWasDeleted($retweet))->toOthers();
 
         $this->dispatch(event: 'deleteTweet', tweetId: $retweet->id);
+
+        $retweet->deleteRetweet($retweet);
     }
 
     #[On('echo:tweets,RetweetCountUpdated')]
