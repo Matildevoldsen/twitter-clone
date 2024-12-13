@@ -27,21 +27,26 @@ class RetweetAction extends Component
             }
         }
 
-        $tweet->createRetweet();
+        $retweet = $tweet->createRetweet();
 
-        $this->dispatch(event: 'addTweet', tweetId: $tweet->id);
+        $this->dispatch(event: 'addTweet', tweetId: $retweet->id);
     }
 
     public function undoRetweet(): void
     {
         $retweet = $this->tweet;
 
-        broadcast(new RetweetCountUpdated($retweet->originalTweet))->toOthers();
-        broadcast(new TweetWasDeleted($retweet))->toOthers();
+        broadcast(new RetweetCountUpdated($retweet))->toOthers();
+        broadcast(new TweetWasDeleted($this->getRetweetedTweet()))->toOthers();
 
-        $this->dispatch(event: 'deleteTweet', tweetId: $retweet->id);
+        $this->dispatch(event: 'deleteTweet', tweetId: $this->getRetweetedTweet()->id);
 
-        $retweet->deleteRetweet($retweet);
+        $this->getRetweetedTweet()->deleteRetweet($this->getRetweetedTweet());
+    }
+
+    private function getRetweetedTweet(): ?TweetModel
+    {
+        return TweetModel::where('user_id', auth()->id())->where('original_tweet_id', $this->tweet->id)->first();
     }
 
     #[On('echo:tweets,RetweetCountUpdated')]

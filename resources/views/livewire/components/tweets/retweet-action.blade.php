@@ -1,5 +1,5 @@
 <div
-    class="{{ auth()->user() && auth()->user()->hasRetweeted($tweet) ? 'text-green-400' : 'dark:text-white text-gray-400 hover:text-green-400 dark:hover:text-green-400' }} text-xs flex-1 flex items-center transition duration-350 ease-in-out">
+    class="{{ auth()->user() && auth()->user()->hasRetweeted($tweet) ? 'text-green-400' : 'dark:text-white hover:text-green-400 dark:hover:text-green-400' }} text-xs flex-1 flex items-center transition duration-350 ease-in-out">
     @auth
         <x-tweet-action-dropdown>
             <x-slot:trigger>
@@ -19,11 +19,11 @@
 
             <x-tweet-action-dropdown-item>
                 @if (!auth()->user()->hasRetweeted($tweet))
-                    <span wire:click="retweet">
+                    <span class="flex w-full" wire:click="retweet">
                         Retweet
                     </span>
                 @else
-                    <span wire:click="undoRetweet">
+                    <span class="flex w-full" wire:click="undoRetweet">
                         Undo Retweet
                     </span>
                 @endif

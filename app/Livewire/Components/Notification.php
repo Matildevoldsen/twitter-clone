@@ -20,13 +20,27 @@ class Notification extends Component
         $this->notification->markAsRead();
     }
 
-    public function getTweet(): Tweet
+    public function getTweet(): ?Tweet
     {
-        if ($this->notification->type == RetweetNotification::class) {
-            return Tweet::find($this->notification->data['original_tweet'])->originalTweet;
+        if (!isset($this?->notification?->data['retweet_id'])) {
+            return null;
         }
 
-        return Tweet::find($this->notification->data['retweet_id'])->originalTweet;
+        if ($this->notification->type == RetweetNotification::class) {
+            $tweet = Tweet::find($this->notification->data['retweet_id']);
+            if (!$tweet) {
+                return null;
+            }
+
+            return $tweet?->originalTweet;
+        }
+
+        $tweet = Tweet::find($this?->notification?->data['retweet_id']);
+        if (!$tweet) {
+            return null;
+        }
+
+        return $tweet?->originalTweet;
     }
 
     public function getIcon(): string

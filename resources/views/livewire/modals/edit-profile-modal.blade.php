@@ -13,7 +13,7 @@
                     </div>
                 @else
                     <div class="h-36 bg-cover bg-center rounded-t-lg"
-                         style="background-image: url('{{ auth()->user()->banner_path ?? '' }}');">
+                         style="background-image: url('/{{ auth()->user()->banner_path ?? '' }}');">
                         <div class="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center">
                             <span class="text-white text-sm">Change Banner</span>
                         </div>
@@ -21,7 +21,7 @@
                 @endif
 
                 @error('form.banner_path')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </label>
 
@@ -47,10 +47,11 @@
 
             <div class="mb-4 mt-20">
                 <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
-                <input class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 w-full focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                       type="text"
-                       wire:model="form.name"
-                       id="name"/>
+                <input
+                    class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 w-full focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                    type="text"
+                    wire:model="form.name"
+                    id="name"/>
 
                 <x-input-error for="form.name"/>
             </div>
@@ -59,10 +60,18 @@
             <div class="mb-4">
                 <label for="username"
                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
-                <input class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 w-full dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                       type="text"
-                       wire:model="form.username"
-                       id="username">
+                <input
+                    class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 w-full dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                    type="text"
+                    {{ $this->canUpdateUsername() ? '' : 'disabled' }}
+                    wire:model="form.username"
+                    id="username">
+                @if (!$this->canUpdateUsername())
+                    <small>
+                        Your username can only be changed once every
+                        {{ config('x.can_update_username_every') }} days.
+                    </small>
+                @endif
                 <x-input-error for="form.username"/>
             </div>
 
@@ -70,10 +79,11 @@
             <div class="mb-4">
                 <label for="website"
                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Website</label>
-                <input class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 w-full dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                       type="url"
-                       wire:model="form.website"
-                       id="website">
+                <input
+                    class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 w-full dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                    type="url"
+                    wire:model="form.website"
+                    id="website">
                 <x-input-error for="form.website"/>
             </div>
 
@@ -84,7 +94,7 @@
                           rows="3"
                           class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm w-full"></textarea>
                 @error('form.description')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
         </div>

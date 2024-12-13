@@ -32,6 +32,12 @@ class EditProfileModal extends Component
 
         $user = auth()->user();
 
+        if (!$this->canUpdateUsername()) {
+            $this->form->addError('username', 'You can only update your username once every ' . config('x.can_update_username_every') . ' days.');
+
+            return;
+        }
+
         if ($this->form->profile_photo_path) {
             if ($user->profile_photo_path) {
                 Storage::delete($user->profile_photo_path);
@@ -51,12 +57,13 @@ class EditProfileModal extends Component
         }
 
         $originalUserName = $user->username;
-        $user->update([
-            'name' => $this->form->name,
-            'website' => $this->form->website,
-            'username' => $this->form->username,
-            'description' => $this->form->description,
-        ]);
+
+        $user->name = $this->form->name;
+        $user->website = $this->form->website;
+        $user->username = $this->form->username;
+        $user->description = $this->form->description;
+
+        $user->save();
 
         if ($this->form->username !== $originalUserName) {
             $this->redirect(route('profile.show', $user->username));
@@ -64,6 +71,11 @@ class EditProfileModal extends Component
 
         $this->dispatch('updateProfilePage');
         $this->hide();
+    }
+
+    public function canUpdateUsername(): bool
+    {
+        return auth()->user()->username_last_updated_at->diffInDays(now()) >= config('x.can_update_username_every');
     }
 
     public function render(): View

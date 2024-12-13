@@ -5,7 +5,6 @@ namespace App\Models\Traits;
 use App\Events\RetweetCountUpdated;
 use App\Events\TweetWasCreated;
 use App\Models\Tweet;
-use App\Models\User;
 use App\Notifications\RetweetNotification;
 use App\TweetType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,7 +22,7 @@ trait HasRetweets
         return $this->hasOne(Tweet::class, 'id', 'original_tweet_id');
     }
 
-    public function createRetweet(): void
+    public function createRetweet(): ?Tweet
     {
         $tweet = $this->retweets()->create([
             'user_id' => auth()->id(),
@@ -31,6 +30,8 @@ trait HasRetweets
         ]);
 
         $this->notifyUserOfTweets($tweet);
+
+        return $tweet;
     }
 
     public function deleteRetweet(Tweet $tweet): void
@@ -41,9 +42,9 @@ trait HasRetweets
     private function notifyUserOfTweets(Tweet $tweet): void
     {
         broadcast(new TweetWasCreated($tweet))->toOthers();
-        broadcast(new RetweetCountUpdated($this->tweet))->toOthers();
+        broadcast(new RetweetCountUpdated($this))->toOthers();
 
-        if (auth()->user()->id !== $this->tweet->user_id) {
+        if (auth()->user()->id !== $this->user_id) {
             $this->tweet->user->notify(new RetweetNotification($tweet));
         }
     }

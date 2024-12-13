@@ -77,12 +77,7 @@ class Timeline extends Component
         $tweet = Tweet::find($tweetId);
 
         if ($tweet) {
-            // Add the tweet to the top of the collection
-            $this->tweets->prepend($tweet);
-
-            // Update the chunks array to reflect the addition
-            array_unshift($this->chunks, [$tweet->id]);
-            $this->recalculatePagination();
+            $this->tweets->add($tweet);
         }
     }
 

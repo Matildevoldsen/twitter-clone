@@ -4,6 +4,12 @@
             <div class="w-3/5 border border-y-0 dark:border-gray-800 border-gray-200">
                 <div class="border-t border-gray-200 dark:border-gray-700">
                     <livewire:components.profile.edit-profile :user="$user"/>
+
+                    <div class="border-t dark:border-gray-700 border-gray-200">
+                        @foreach($user->tweets as $tweet)
+                            <livewire:components.tweets.tweet :tweet="$tweet" :key="$tweet->id"/>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </main>

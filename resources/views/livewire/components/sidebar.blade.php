@@ -38,8 +38,8 @@
                             ></path>
                         </svg>
                         <span class="hidden xl:block ml-4 font-bold text-md">
-                        Notifications
-                    </span>
+                            Notifications
+                        </span>
                     </x-sidebar-item>
                     <x-sidebar-item url="{{ route('profile.show', auth()->user()) }}"
                                     active="{{ request()->is('profile/' . auth()->user()->username) }}">
@@ -66,7 +66,7 @@
                         <div class="flex flex-row">
                             <img
                                 class="w-10 h-10 rounded-full"
-                                src="{{ auth()?->user()?->profile_photo_url }} }}"
+                                src="{{ auth()?->user()?->profile_photo_url }}"
                                 alt="Photo of {{ auth()?->user()?->name }}"
                             />
                             <div class="hidden xl:block flex flex-col ml-2">
@@ -104,6 +104,7 @@
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
                                 <a href="{{ route('logout') }}"
+                                   class="text-black dark:text-white"
                                    @click.prevent="$root.submit()">
                                     Logout
                                 </a>

@@ -1,6 +1,8 @@
 <div>
     @foreach ($tweets as $tweet)
-        <livewire:components.tweets.tweet :wire:key="$tweet->id" :tweet="$tweet"/>
+        <div>
+            <livewire:components.tweets.tweet :key="$tweet->uuid" :tweet="$tweet"/>
+        </div>
     @endforeach
 
     @if ($this->hasMorePages())
