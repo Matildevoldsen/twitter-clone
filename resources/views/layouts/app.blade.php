@@ -22,6 +22,8 @@
             <div class="flex flex-row justify-center">
                 {{ $slot }}
             </div>
+
+            <livewire:components.right-sidebar />
         </div>
 
         @livewireScriptConfig
