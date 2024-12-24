@@ -29,12 +29,23 @@
                     </div>
                 </a>
                 <div>
-                    <a
-                        href="#"
-                        class="rounded-full border-2 border-blue-400 px-4 py-1 text-xs font-bold text-blue-400"
-                    >
-                        Follow
-                    </a>
+                    @if (auth()->user()->isFollowing($user))
+                        <button
+                            type="button"
+                            wire:click="toggleFollow({{ $user->id }})"
+                            class="rounded-full border-2 bg-blue-400 px-4 py-1 text-xs font-bold text-white"
+                        >
+                            Unfollow
+                        </button>
+                    @else
+                        <button
+                            type="button"
+                            wire:click="toggleFollow({{ $user->id }})"
+                            class="rounded-full border-2 border-blue-400 px-4 py-1 text-xs font-bold text-blue-400"
+                        >
+                            Follow
+                        </button>
+                    @endif
                 </div>
             </div>
         @endforeach
