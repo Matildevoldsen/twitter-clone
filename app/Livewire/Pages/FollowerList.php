@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Pages;
 
+use App\Models\User;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class Home extends Component
+class FollowerList extends Component
 {
     public function render(): View
     {
-        return view('livewire.pages.home');
+        return view('livewire.pages.follower-list');
     }
 }

@@ -3,7 +3,9 @@
         class="fixed flex h-screen w-290 flex-col overflow-y-auto lg:w-350"
     >
         <livewire:components.search-bar />
-        <livewire:components.who-to-follow lazy />
+        @if (!request()->routeIs('follower.list'))
+            <livewire:components.who-to-follow.who-to-follow lazy />
+        @endif
         <footer>
             <ul class="mx-2 my-4 text-xs text-gray-500">
                 <li class="mx-2 inline-block">
