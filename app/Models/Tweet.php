@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class Tweet extends Model implements HasMedia
 {
@@ -21,6 +21,7 @@ class Tweet extends Model implements HasMedia
     use HasFactory;
     use SoftDeletes;
     use HasRetweets;
+    use HasRecursiveRelationships;
 
     protected $guarded = [];
 
@@ -43,7 +44,7 @@ class Tweet extends Model implements HasMedia
 
     public function getContentWithLinksAttribute(): string
     {
-        $extractor = new \App\Entities\EntityExtractor($this->body);
+        $extractor = new EntityExtractor($this->body);
         return $extractor->renderEntitiesWithLinks();
     }
 
@@ -55,6 +56,12 @@ class Tweet extends Model implements HasMedia
     public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
+    }
+
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(\App\Livewire\Pages\Tweet::class, 'parent_id');
     }
 
     public function entities(): HasMany
