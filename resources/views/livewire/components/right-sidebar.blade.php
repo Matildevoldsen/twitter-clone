@@ -29,7 +29,7 @@
                         More</a>
                 </li>
                 <li class="mx-2 inline-block">
-                    © 2024 Twitter, Inc.
+                    © {{ date('Y') }} {{ config('app.name') }}, Inc.
                 </li>
             </ul>
         </footer>

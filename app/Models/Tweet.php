@@ -68,4 +68,9 @@ class Tweet extends Model implements HasMedia
     {
         return $this->hasMany(Entity::class);
     }
+
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Tweet::class, 'parent_id');
+    }
 }

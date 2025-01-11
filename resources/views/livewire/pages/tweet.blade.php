@@ -20,14 +20,16 @@
                                               :tweet="$parentTweet"/>
         @endforeach
 
-        <div>
-            reply
-        </div>
+        <livewire:components.compose.reply :reply="$tweet"/>
 
-        <div
-            class="border-b flex justify-center justify-items-center items-center border-gray-200 dark:border-dim-200 hover:bg-gray-100 dark:hover:bg-dim-300 cursor-pointer transition duration-350 ease-in-out pb-4 border-l border-r"
-        >
-            <p class="mt-3 dark:text-gray-300 text-gray-700">No replies.</p>
-        </div>
+        @forelse($this->getReplies() as $reply)
+            <livewire:components.tweets.tweet :tweet="$reply" :wire:key="$reply->id"/>
+        @empty
+                <div
+                    class="border-b flex justify-center justify-items-center items-center border-gray-200 dark:border-dim-200 hover:bg-gray-100 dark:hover:bg-dim-300 cursor-pointer transition duration-350 ease-in-out pb-4 border-l border-r"
+                >
+                    <p class="mt-3 dark:text-gray-300 text-gray-700">No replies.</p>
+                </div>
+        @endforelse
     @endif
 </div>
