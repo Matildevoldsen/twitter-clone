@@ -14,7 +14,7 @@ class UserList extends Component
     public function mount(): void
     {
         $this->users = User::inRandomOrder()
-            ->whereNot('id', auth()->user()->id)->
+            ->whereNot('id', auth()->user()?->id)->
             limit($this->limit)
             ->get();
     }
