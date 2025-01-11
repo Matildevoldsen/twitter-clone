@@ -2,7 +2,7 @@
     <div
         class="fixed flex h-screen w-290 flex-col overflow-y-auto lg:w-350"
     >
-        <livewire:components.search-bar />
+        <livewire:components.searchbar />
         @if (!request()->routeIs('follower.list'))
             <livewire:components.who-to-follow.who-to-follow lazy />
         @endif
