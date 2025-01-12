@@ -75,7 +75,7 @@ class EditProfileModal extends Component
 
     public function canUpdateUsername(): bool
     {
-        return auth()->user()->username_last_updated_at->diffInDays(now()) >= config('x.can_update_username_every');
+        return auth()->user()->username_last_updated_at?->diffInDays(now()) >= config('x.can_update_username_every');
     }
 
     public function render(): View
