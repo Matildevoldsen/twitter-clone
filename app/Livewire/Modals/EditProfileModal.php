@@ -22,7 +22,7 @@ class EditProfileModal extends Component
 
         $this->form->description = $user?->description ?? '';
         $this->form->website = $user?->website ?? '';
-        $this->form->username = $user?->username ?? '';
+        //$this->form->username = $user?->username ?? '';
         $this->form->name = $user?->name ?? '';
     }
 
@@ -32,11 +32,11 @@ class EditProfileModal extends Component
 
         $user = auth()->user();
 
-        if (!$this->canUpdateUsername()) {
-            $this->form->addError('username', 'You can only update your username once every ' . config('x.can_update_username_every') . ' days.');
+        // if (!$this->canUpdateUsername()) {
+        //     $this->form->addError('username', 'You can only update your username once every ' . config('x.can_update_username_every') . ' days.');
 
-            return;
-        }
+        //     return;
+        // }
 
         if ($this->form->profile_photo_path) {
             if ($user->profile_photo_path) {
@@ -56,7 +56,7 @@ class EditProfileModal extends Component
             $user->update(['banner_path' => $path]);
         }
 
-        $originalUserName = $user->username;
+        //$originalUserName = $user->username;
 
         $user->name = $this->form->name;
         $user->website = $this->form->website;
@@ -65,9 +65,9 @@ class EditProfileModal extends Component
 
         $user->save();
 
-        if ($this->form->username !== $originalUserName) {
-            $this->redirect(route('profile.show', $user->username));
-        }
+        // if ($this->form->username !== $originalUserName) {
+        //     $this->redirect(route('profile.show', $user->username));
+        // }
 
         $this->dispatch('updateProfilePage');
         $this->hide();

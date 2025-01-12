@@ -16,9 +16,9 @@ class EditProfileModalForm extends Form
     #[Validate('required', 'string', 'max:350')]
     public string $website;
 
-    #[Validate('required', 'string', 'max:255', 'unique:users,username')]
+   // #[Validate('required', 'string', 'max:255', 'unique:users,username')]
 
-    public string $username;
+   // public string $username;
 
     public $profile_photo_path;
 
