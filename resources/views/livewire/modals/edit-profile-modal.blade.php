@@ -57,7 +57,7 @@
             </div>
 
             <!-- Username Field -->
-            <div class="mb-4">
+            {{-- <div class="mb-4">
                 <label for="username"
                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
                 <input
@@ -73,7 +73,7 @@
                     </small>
                 @endif
                 <x-input-error for="form.username"/>
-            </div>
+            </div> --}}
 
             <!-- Website Field -->
             <div class="mb-4">
