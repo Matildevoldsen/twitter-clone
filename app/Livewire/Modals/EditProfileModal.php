@@ -60,7 +60,7 @@ class EditProfileModal extends Component
 
         $user->name = $this->form->name;
         $user->website = $this->form->website;
-        $user->username = $this->form->username;
+        //$user->username = $this->form->username;
         $user->description = $this->form->description;
 
         $user->save();
