@@ -52,7 +52,7 @@ class EditProfileModal extends Component
                 Storage::delete($user->banner_path);
             }
 
-            $path = $this->form->banner_path->store('banner-photos', 'public');
+            $path = $this->form->banner_path->store('profile-photos', 'public');
             $user->update(['banner_path' => $path]);
         }
 
