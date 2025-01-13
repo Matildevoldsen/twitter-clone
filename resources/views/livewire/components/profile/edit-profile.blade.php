@@ -25,9 +25,9 @@
     <!-- User card-->
     <div>
         <div class="w-full bg-cover bg-no-repeat bg-center"
-             style="height: 200px; background-image: url('/storage{{ $user->banner_path ?? 'https://via.placeholder.com/600x200' }}');">
+             style="height: 200px; background-image: url('/{{ $user->banner_path ?? 'https://via.placeholder.com/600x200' }}');">
             <img class="opacity-0 w-full h-full"
-                 src="/storage/{{ $user->banner_path ?? 'https://via.placeholder.com/600x200' }}" alt="">
+                 src="{{ $user->banner_path ?? 'https://via.placeholder.com/600x200' }}" alt="">
         </div>
         <div class="p-4">
             <div class="relative flex w-full">
@@ -50,7 +50,7 @@
                             x-data
                             wire:click="dispatchTo('modals.edit-profile-modal', 'show')"
                             class="flex justify-center  max-h-max whitespace-nowrap focus:outline-none  focus:ring max-w-max border bg-transparent border-blue-500 text-blue-500 hover:border-blue-800 items-center hover:shadow-lg font-bold py-2 px-4 rounded-full mr-0 ml-auto">
-                            Edit Profil
+                            Edit Profile
                         </button>
                     @else
                         <button
