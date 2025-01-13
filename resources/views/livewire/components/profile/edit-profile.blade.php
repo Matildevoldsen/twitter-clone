@@ -17,7 +17,7 @@
             <h2 class="mb-0 text-xl font-bold text-gray-900 dark:text-white">
                 {{ $user->username }}
                 <p class="mb-0 w-48 text-xs text-gray-900 dark:text-gray-400">
-                    {{ $user->tweets->count() }} Tweets
+                    {{ $user->tweets->count() }} Posts
                 </p>
             </h2>
         </div>
@@ -25,7 +25,7 @@
     <!-- User card-->
     <div>
         <div class="w-full bg-cover bg-no-repeat bg-center"
-             style="height: 200px; background-image: url('/{{ $user->banner_path ?? 'https://via.placeholder.com/600x200' }}');">
+             style="height: 200px; background-image: url('/storage{{ $user->banner_path ?? 'https://via.placeholder.com/600x200' }}');">
             <img class="opacity-0 w-full h-full"
                  src="{{ $user->banner_path ?? 'https://via.placeholder.com/600x200' }}" alt="">
         </div>
