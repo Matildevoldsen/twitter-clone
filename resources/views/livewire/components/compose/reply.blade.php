@@ -65,7 +65,20 @@
             ></textarea>
             <div x-show="images" class="w-full flex flex-wrap p-2">
                 @if ($this->form->images)
-                    Hi
+                    @foreach($this->form->images as $image)
+                        <div class="relative m-1">
+                            <img src="{{ $image->temporaryUrl() }}"
+                                 class="w-20 h-20 object-cover rounded-md"
+                                 alt="Image Preview">
+                            <button
+                                wire:click="removeImage({{ $loop->index }})"
+                                type="button"
+                                class="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs"
+                            >
+                                x
+                            </button>
+                        </div>
+                    @endforeach
                 @endif
             </div>
             <div x-show="expand" class="flex items-center justify-between mt-2 transition-all duration-300">

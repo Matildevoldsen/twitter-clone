@@ -2,7 +2,12 @@
 
 namespace App\Livewire\Components\Compose;
 
+use App\Events\ReplyCountUpdated;
+use App\Events\TweetCreated;
+use App\Events\TweetWasCreated;
+use App\Livewire\Concerns\IsComposing;
 use App\Livewire\Forms\ReplyForm;
+use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Tweet as TweetModel;
@@ -10,9 +15,32 @@ use App\Models\Tweet as TweetModel;
 class Reply extends Component
 {
     use WithFileUploads;
+    use IsComposing;
+
     public TweetModel $reply;
     public ReplyForm $form;
-    public function render()
+
+    public function reply(): void
+    {
+        $parent = $this->reply->id;
+        if ($this->reply->originalTweet) {
+            $parent = $this->reply->originalTweet->id;
+        }
+
+        $tweet = auth()->user()->tweets()->create([
+            'content' => $this->form->body,
+            'type' => TweetType::TWEET,
+            'parent_id' => $parent
+        ]);
+
+        broadcast(new TweetWasCreated($tweet))->toOthers();
+        //broadcast(new ReplyCountUpdated($tweet))->toOthers();
+
+        $this->form->reset();
+        $this->dispatch(event: 'addReply', reply: $tweet->id);
+    }
+
+    public function render(): View
     {
         return view('livewire.components.compose.reply');
     }
