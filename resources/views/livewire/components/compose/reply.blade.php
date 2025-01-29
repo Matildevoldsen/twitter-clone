@@ -47,6 +47,7 @@
     }"
     x-on:click.outside="expand = false"
     :class="{ 'p-6': expand }"
+    @submit.prevent="reply()"
     class="border-b border-gray-200 dark:border-dim-200 hover:bg-gray-100 dark:hover:bg-dim-300 cursor-pointer duration-350 ease-in-out border-l border-r p-4 transition-all duration-300">
     <div class="flex items-start space-x-4">
         <img
@@ -58,6 +59,7 @@
                 name="reply"
                 @focus="expand = true"
                 id="reply"
+                x-model="body"
                 x-ref="textarea"
                 placeholder="Reply to {{ $reply?->user?->name ?? 'post' }}"
                 x-auto-resize
@@ -129,7 +131,6 @@
                     </svg>
                 </div>
                 <button type="submit" class="bg-pink-600 text-white px-4 py-2 rounded-full">Reply</button>
-
             </div>
         </div>
     </div>
