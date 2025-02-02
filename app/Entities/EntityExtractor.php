@@ -27,17 +27,17 @@ class EntityExtractor implements EntityExtractorContract
     {
         $stringWithHashtags = preg_replace_callback(self::HASHTAG_REGEX, function ($matches) {
             $hashtag = $matches[1];
-            return '<a wire:navigate href="/hashtag/' . urlencode($hashtag) . '">#' . htmlspecialchars($hashtag) . '</a>';
+            return '<a class="text-black" wire:navigate href="/hashtag/' . urlencode($hashtag) . '">#' . htmlspecialchars($hashtag) . '</a>';
         }, $this->string);
 
         $stringWithMentions = preg_replace_callback(self::MENTION_REGEX, function ($matches) {
             $mention = $matches[1];
-            return '<a wire:navigate href="/profile/' . urlencode($mention) . '">@' . htmlspecialchars($mention) . '</a>';
+            return '<a class="text-black" wire:navigate href="/profile/' . urlencode($mention) . '">@' . htmlspecialchars($mention) . '</a>';
         }, $stringWithHashtags);
 
         return preg_replace_callback(self::URL_REGEX, function ($matches) {
             $url = $matches[0];
-            return '<a href="' . htmlspecialchars($url) . '">' . htmlspecialchars($url) . '</a>';
+            return '<a class="text-black" href="' . htmlspecialchars($url) . '">' . htmlspecialchars($url) . '</a>';
         }, $stringWithMentions);
     }
 

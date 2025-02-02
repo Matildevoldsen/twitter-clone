@@ -33,6 +33,13 @@ class Reply extends Component
             'parent_id' => $parent
         ]);
 
+        if(!empty($this->form->images)) {
+            foreach ($this->form->images as $image) {
+                $tweet->addMedia($image)
+                    ->toMediaCollection();
+            }
+        }
+
         broadcast(new TweetWasCreated($tweet))->toOthers();
         broadcast(new ReplyCountUpdated($tweet))->toOthers();
 

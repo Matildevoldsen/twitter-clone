@@ -15,6 +15,7 @@ use App\Models\Tweet as TweetModel;
 class RetweetAction extends Component
 {
     public TweetModel $tweet;
+    public bool $visible = false;
 
     public function retweet(): void
     {
@@ -30,6 +31,11 @@ class RetweetAction extends Component
         $retweet = $tweet->createRetweet();
 
         $this->dispatch(event: 'addTweet', tweetId: $retweet->id);
+    }
+
+    public function quote(): void
+    {
+        $this->visible = true;
     }
 
     public function undoRetweet(): void

@@ -9,7 +9,7 @@ use App\Models\Tweet as TweetModel;
 class TweetUser extends Component
 {
     public TweetModel $tweet;
-
+    public bool $reply = false;
     public function render(): View
     {
         return view('livewire.components.tweets.tweet-user');

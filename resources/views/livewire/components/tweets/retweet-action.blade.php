@@ -29,7 +29,9 @@
                 @endif
             </x-tweet-action-dropdown-item>
             <x-tweet-action-dropdown-item>
-                Quote
+                <span wire:click="quote" class="w-full">
+                    Quote Tweet
+                </span>
             </x-tweet-action-dropdown-item>
         </x-tweet-action-dropdown>
     @endauth
@@ -48,4 +50,8 @@
         </svg>
         {{ $this->getRetweetCount() }}
     @endguest
+
+    @if ($visible)
+        <livewire:modals.quote-tweet-modal wire:key="{{ $tweet->id }}" :tweet="$tweet"/>
+    @endif
 </div>

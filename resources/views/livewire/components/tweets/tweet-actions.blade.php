@@ -1,7 +1,8 @@
 <div class="flex mt-5">
     <div class="w-full">
         <div class="flex items-center">
-            <div
+            <a
+                href="{{ route('tweet.show', $tweet) }}"
                 class="flex-1 flex items-center text-gray-800 dark:text-white text-xs text-gray-400 hover:text-blue-400 dark:hover:text-blue-400 transition duration-350 ease-in-out"
             >
                 <svg
@@ -16,7 +17,7 @@
                     </g>
                 </svg>
                 0
-            </div>
+            </a>
             <livewire:components.tweets.retweet-action :tweet="$tweet"/>
             @if (auth()->user() && auth()->user()->hasLiked($tweet))
                 <div
